@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
+using Tailwind.Traders.Rewards.Registration.Api.Repositories;
 
 namespace Tailwind.Traders.Rewards.Registration.Api
 {
@@ -12,27 +7,31 @@ namespace Tailwind.Traders.Rewards.Registration.Api
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class UserService : IUserService
     {
-        public string GetData(int value)
+        private readonly CustomerRepository _customerRepository;
+
+        public UserService()
         {
-            return string.Format("You entered: {0}", value);
+            _customerRepository = new CustomerRepository();
         }
 
-        public string Registration(string email)
+        public bool Registration(string email)
         {
-            return string.Format("New user created: {0}", email);
-        }
+            try
+            {
+                var user = _customerRepository.GetCustomerByEmailOrName(email);
+                if (user != null)
+                {
+                    return false;
+                }
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
-        {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
+                _customerRepository.InsertCustomer(email);
+
+                return true;
             }
-            if (composite.BoolValue)
+            catch(Exception)
             {
-                composite.StringValue += "Suffix";
+                return false;
             }
-            return composite;
         }
     }
 }
