@@ -7,6 +7,11 @@ namespace Tailwind.Traders.Rewards.Registration.Api.Mappers
     {
         public Customer Map(DataRow customerRow)
         {
+            if (customerRow == null)
+            {
+                return null;
+            }
+
             return new Customer
             {
                 AccountCode = customerRow["AccountCode"].ToString(),

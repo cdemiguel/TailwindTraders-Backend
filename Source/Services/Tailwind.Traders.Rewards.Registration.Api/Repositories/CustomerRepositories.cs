@@ -18,7 +18,12 @@ namespace Tailwind.Traders.Rewards.Registration.Api.Repositories
             var query = "SELECT TOP 1 * FROM CUSTOMERS WHERE FirstName = @emailOrName OR Email = @emailOrName";
             var emailOrNameParam = new SqlParameter("@emailOrName", emailOrName);
             var table = ExecuteSelect(query, new SqlParameter[] { emailOrNameParam });
-            return _mapper.Map(table.Rows[0]);
+            if (table?.Rows != null && table.Rows.Count > 0)
+            {
+                return _mapper.Map(table.Rows[0]);
+            }
+
+            return null;
         }
 
         public void InsertCustomer(string email)
