@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading;
 using Tailwind.Traders.WebBff.Helpers;
 using Tailwind.Traders.WebBff.Infrastructure;
+using Tailwind.Traders.WebBff.Services;
 
 namespace Tailwind.Traders.WebBff
 {
@@ -32,6 +33,8 @@ namespace Tailwind.Traders.WebBff
             services.AddHttpClientServices(Configuration);
 
             services.Configure<AppSettings>(Configuration);
+
+            services.AddTransient<IRegisterService, RegisterService>();
 
             services.AddSwaggerGen(options =>
             {

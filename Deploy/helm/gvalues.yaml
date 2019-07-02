@@ -78,7 +78,9 @@ inf:
     stockapiurl: http://stock
     imageclassifierapiurl: http://imageclassifier
     loginapiurl: http://login
-  bypassregistrationusers: "false"
+  registrationusers:
+    bypassregistrationusers: "false"
+    registrationusersurl: "http://registrationsvc/UserService.svc"
 az:
   productvisitsurl: ""
 

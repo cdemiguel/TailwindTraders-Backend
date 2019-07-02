@@ -38,6 +38,7 @@ env:
     - name: B2CIssuer
     - name: Authority
     - name: BypassRegistrationUsers
+    - name: RegistrationUsersEndpoint
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Development
