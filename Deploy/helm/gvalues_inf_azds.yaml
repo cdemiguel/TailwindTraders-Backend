@@ -73,6 +73,7 @@ inf:
     stockapiurl: http://stock
     imageclassifierapiurl: http://imageclassifier
     loginapiurl: http://login
+  bypassregistrationusers: "false"
 az:
   productvisitsurl: ""
 
@@ -96,6 +97,16 @@ ingress:
 sec:
   issuer: TTFakeLogin
   securityKey: nEpLzQJGNSCNL5H6DIQCtTdNxf5VgAGcBbtXLms1YDD01KJBAs0WVawaEjn97uwB
+
+B2C:
+  UseB2C: "false"
+  B2CIssuer: ""
+  Authority: ""
+  tenantID: ""
+  clientID: ""
+  policyName: ""
+  identityMetadata: ""
+  issuer: ""
 
 # Autoscaling global settings
 hpa:

@@ -78,6 +78,7 @@ inf:
     stockapiurl: http://stock
     imageclassifierapiurl: http://imageclassifier
     loginapiurl: http://login
+  bypassregistrationusers: "false"
 az:
   productvisitsurl: ""
 

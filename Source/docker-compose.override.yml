@@ -140,5 +140,6 @@ services:
       - UseB2C=${UseB2C:-false}
       - B2CIssuer=
       - Authority=
+      - BypassRegistrationUsers=${BypassRegistrationUsers:-true}
     ports:
       - "5200:80"

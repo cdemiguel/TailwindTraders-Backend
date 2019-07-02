@@ -44,6 +44,11 @@ namespace Tailwind.Traders.WebBff.Controllers
                 return BadRequest();
             }
 
+            if(!_settings.BypassRegistrationUsers)
+            {
+
+            }
+
             var result = await response.Content.ReadAsStringAsync();
             var authResponse = JsonConvert.DeserializeObject<AuthResponse>(result);
             return Ok(authResponse);
