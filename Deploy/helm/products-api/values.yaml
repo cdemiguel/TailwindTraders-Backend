@@ -16,8 +16,9 @@ resources:
   requests:
     cpu: "100m"
 
-nodeSelector: {}
-
+nodeSelector:
+  "kubernetes.io/os": linux
+  
 tolerations: []
 
 affinity: {}
