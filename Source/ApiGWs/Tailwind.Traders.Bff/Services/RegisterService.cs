@@ -1,7 +1,7 @@
 ﻿using RegistrationUserService;
 using System.Threading.Tasks;
 
-namespace Tailwind.Traders.WebBff.Services
+namespace Tailwind.Traders.MobileBff.Services
 {
     public class RegisterService : IRegisterService
     {
@@ -11,6 +11,7 @@ namespace Tailwind.Traders.WebBff.Services
         {
             _client = client;
         }
+
         public async Task<bool> RegisterUserIfNotExists(string email)
         {
             return await _client.RegistrationAsync(email);

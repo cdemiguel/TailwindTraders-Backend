@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Tailwind.Traders.WebBff.Services
+namespace Tailwind.Traders.MobileBff.Services
 {
     public interface IRegisterService
     {

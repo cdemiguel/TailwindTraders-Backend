@@ -3,6 +3,6 @@
 
 FROM mcr.microsoft.com/dotnet/framework/wcf:4.7.2-windowsservercore-ltsc2019
 ARG source
-EXPOSE 808
+EXPOSE 8080
 WORKDIR /inetpub/wwwroot
 COPY ${source:-obj/Docker/publish} .

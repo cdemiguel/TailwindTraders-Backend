@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using Tailwind.Traders.WebBff.Infrastructure;
 using Tailwind.Traders.WebBff.Models;
 using Tailwind.Traders.WebBff.Services;
 
@@ -33,27 +37,26 @@ namespace Tailwind.Traders.WebBff.Controllers
         [HttpPost()]
         public async Task<IActionResult> Login([FromBody] TokenRequest request)
         {
-            //var client = _httpClientFactory.CreateClient(HttpClients.ApiGW);
+            var client = _httpClientFactory.CreateClient(HttpClients.ApiGW);
 
-            //var json = JsonConvert.SerializeObject(request);
-            //var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
+            var json = JsonConvert.SerializeObject(request);
+            var stringContent = new StringContent(json, UnicodeEncoding.UTF8, "application/json");
 
-            //var response = await client.PostAsync(API.Login.PostLogin(_settings.LoginApiUrl, VERSION_API), stringContent);
+            var response = await client.PostAsync(API.Login.PostLogin(_settings.LoginApiUrl, VERSION_API), stringContent);
 
-            //if (response.StatusCode == HttpStatusCode.BadRequest)
-            //{
-            //    return BadRequest();
-            //}
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                return BadRequest();
+            }
 
             if (!_settings.BypassRegistrationUsers)
             {
                 await _registerService.RegisterUserIfNotExists(request.Username);
             }
 
-            //var result = await response.Content.ReadAsStringAsync();
-            //var authResponse = JsonConvert.DeserializeObject<AuthResponse>(result);
-            //return Ok(authResponse);
-            return Ok();
+            var result = await response.Content.ReadAsStringAsync();
+            var authResponse = JsonConvert.DeserializeObject<AuthResponse>(result);
+            return Ok(authResponse);
         }
     }
 }
