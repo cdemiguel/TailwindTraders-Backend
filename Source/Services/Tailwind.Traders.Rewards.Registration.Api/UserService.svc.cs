@@ -28,9 +28,8 @@ namespace Tailwind.Traders.Rewards.Registration.Api
 
                 return true;
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                var error = e;
                 return false;
             }
         }
