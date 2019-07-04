@@ -49,7 +49,7 @@ namespace Tailwind.Traders.WebBff.Controllers
                 return BadRequest();
             }
 
-            if (!_settings.BypassRegistrationUsers)
+            if (_settings.RegisterUsers)
             {
                 await _registerService.RegisterUserIfNotExists(request.Username);
             }

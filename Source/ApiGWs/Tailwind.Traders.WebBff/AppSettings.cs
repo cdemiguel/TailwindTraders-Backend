@@ -15,7 +15,7 @@ namespace Tailwind.Traders.WebBff
         public bool UseMlNetClassifier { get; set; }
         public string StockApiUrl { get; set; }
         public string Authority { get; set; }
-        public bool BypassRegistrationUsers { get; set; }
+        public bool RegisterUsers { get; set; }
         public string RegistrationUsersEndpoint { get; set; }
     }    
 }

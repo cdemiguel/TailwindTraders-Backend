@@ -9,7 +9,7 @@
         public string LoginApiUrl { get; set; }
         public string ImageClassifierApiUrl { get; set; }
         public bool UseMlNetClassifier { get; set; }
-        public bool BypassRegistrationUsers { get; set; }
+        public bool RegisterUsers { get; set; }
         public string RegistrationUsersEndpoint { get; set; }
     }
 }

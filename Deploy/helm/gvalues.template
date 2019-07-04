@@ -74,8 +74,8 @@ inf:
     imageclassifierapiurl: http://imageclassifier
     loginapiurl: http://login
   registrationusers:
-    bypassregistrationusers: "false"
-    registrationusersurl: "http://registrationsvc/UserService.svc"
+    registerusers: "false"
+    registrationusersurl: "TODO DEMI"
 az:
   productvisitsurl: ""
 

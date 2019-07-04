@@ -33,7 +33,7 @@ env:
     - name: ISSUER
     - name: SECURITYKEY
     - name: LoginApiUrl
-    - name: BypassRegistrationUsers
+    - name: RegisterUsers
     - name: RegistrationUsersEndpoint
   values:
     - name: ASPNETCORE_ENVIRONMENT

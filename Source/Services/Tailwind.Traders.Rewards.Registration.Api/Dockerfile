@@ -2,7 +2,6 @@
 #For more information, please see https://aka.ms/containercompat 
 ARG imageTag=4.7.2-windowsservercore-ltsc2019
 FROM mcr.microsoft.com/dotnet/framework/wcf:${imageTag}
-ARG source
 EXPOSE 808
 WORKDIR /inetpub/wwwroot
-COPY ${source:-obj/Docker/publish} .
+COPY obj/Docker/publish .
