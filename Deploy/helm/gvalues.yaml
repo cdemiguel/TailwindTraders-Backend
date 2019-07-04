@@ -76,7 +76,7 @@ inf:
       path: /login-api
     cart:
       path: /cart-api
-    rewards-registration:
+    rewardsregistration:
       path: /rewards-registration-api
   apiurls:
     popularproductsapiurl: http://popularproducts
