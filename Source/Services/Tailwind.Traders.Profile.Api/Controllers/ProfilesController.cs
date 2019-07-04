@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,7 @@ namespace Tailwind.Traders.Profile.Api.Controllers
     [Route("v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize]
     public class ProfileController : ControllerBase
     {
         private readonly ProfileDbContext _ctx;
@@ -31,7 +33,6 @@ namespace Tailwind.Traders.Profile.Api.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(List<Profiles>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        [Authorize]
         public async Task<IActionResult> GetAllProfiles()
         {
             var result = await _ctx.Profiles
@@ -51,7 +52,6 @@ namespace Tailwind.Traders.Profile.Api.Controllers
         [HttpGet("me")]
         [ProducesResponseType(typeof(List<Profiles>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [Authorize]
         public async Task<IActionResult> GetProfile()
         {
             StringValues headerValues;
@@ -80,7 +80,7 @@ namespace Tailwind.Traders.Profile.Api.Controllers
         {
             return new ProfileDto
             {
-                Email = $"{nameFilter}@{nameFilter}.com",
+                Email = nameFilter,
                 Address = "7711 W. Pawnee Ave. Beachwood, OH 44122",
                 Name = nameFilter,
                 PhoneNumber = "+1-202-555-0155",
@@ -94,7 +94,6 @@ namespace Tailwind.Traders.Profile.Api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(List<Profiles>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [Authorize]
         public async Task<IActionResult> Post([FromBody] CreateUser user)
         {
             if (!ModelState.IsValid)
