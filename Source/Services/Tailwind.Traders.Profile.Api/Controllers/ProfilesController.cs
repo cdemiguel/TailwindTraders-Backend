@@ -6,7 +6,6 @@ using Microsoft.Extensions.Primitives;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Tailwind.Traders.Profile.Api.DTOs;
 using Tailwind.Traders.Profile.Api.Infrastructure;
