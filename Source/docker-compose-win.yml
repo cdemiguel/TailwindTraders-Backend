@@ -7,4 +7,4 @@ services:
       context: ./Services/Tailwind.Traders.Rewards.Registration.Api
       dockerfile: Dockerfile    
     ports:
-      - "5010:808"  
+      - "80:808"
