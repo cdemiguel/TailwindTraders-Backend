@@ -139,7 +139,7 @@ if ($charts.Contains("pr") -or  $charts.Contains("*")) {
         $command = "$command --set inf.storage.productimages=$azuriteProductsUrl --set inf.storage.productdetailimages=$azuriteProductsDetailsUrl"
     }
     $command = createHelmCommand $command 
-    cmd /c "$command"
+¡    cmd /c "$command"
 }
 
 if ($charts.Contains("cp") -or  $charts.Contains("*")) {
