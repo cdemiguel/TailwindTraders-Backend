@@ -139,7 +139,7 @@ resources:
 
 ## Deploying services
 
->**Note**: If you want to add SSL/TLS support on the cluster (needed to use https on the web) plase read following section **before installing the backend**.
+>**Note**: If you want to add SSL/TLS support on the cluster (needed to use https on the web) please read *Enabling SSL/TLS on the cluster* section **before installing the backend**.
 
 To deploy the services from a Bash terminal run the `./deploy-images-aks.sh` script with the following parameters:
 
