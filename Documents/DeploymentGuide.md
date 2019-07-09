@@ -156,7 +156,7 @@ resources:
 
 ## Deploying services
 
->**Note**: If you want to add SSL/TLS support on the cluster (needed to use https on the web) plase read following section **before installing the backend**.
+>**Note**: If you want to add SSL/TLS support on the cluster (needed to use https on the web) please read *Enabling SSL/TLS on the cluster* section **before installing the backend**.
 
 >**Note**: If the script has problems detecting the AKS host verify that the AKS has http_application_routing enabled.
 [More information](https://docs.microsoft.com/es-es/azure/aks/http-application-routing)
