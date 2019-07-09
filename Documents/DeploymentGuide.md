@@ -7,7 +7,7 @@ Pre-requisites for this deployment are to have
     * Bash environment with [jq](https://stedolan.github.io/jq/) installed **-OR-**
     * Powershell environment
 * [Azure CLI 2.0](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest) installed.
-* [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) installed.
+* [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) installed with the last version (v1.15.0 at this moment).
 * Docker installed
 
 ## Pre-requisite: Azure infrastructure created
@@ -45,6 +45,21 @@ An example of this file is in `helm/gvalues.yaml`. The deployment scripts use th
 
 >**Note:** The folder `/Deploy/helm/__values/` is added to `.gitignore`, so you can keep all your configuration files in it, to avoid accidental pushes.
 
+>**Note:** If you come from the **[Windows and Linux containers scenario](../Readme.md#Deploy Backend (Windows and Linux containers) on Azure AKS and Azure resources (SQL Azure, CosmosDb, Storage accounts)) (TODO MODIFY)** you must add the Rewards database's connection string, in the values file you are using, for example:
+```yaml
+inf:
+(...)
+  db:
+  (...)  
+    rewards:
+      host: tcp:*****.database.windows.net
+      port: "1433"
+      catalog: rewardsdb # you must not modify this name
+      user: ttuser
+      pwd: YourPassword
+    (...)  
+```
+
 Please refer to the comments of the file for its usage. Just ignore (but not delete) the `tls` section (it is used if TLS is enabled).
 
 ### Auto generating the configuration file
@@ -61,10 +76,11 @@ The parameters that `Generate-Config.ps1` accepts are:
 
 * `-resourceGroup`: Resource group where all Azure resources are. **Mandatory**
 * `-sqlPwd`: Password of SQL Servers and PostgreSQL server. This parameter is **mandatory** because can't be read using Azure CLI
+* `-rewardsResourceGroup`: Fill it if you are going to use Rewards DB (this is used, for example in the **Windows and Linux containers in AKS** scenarios)
 * `-forcePwd`: If `$true`, the scripts updates the SQL Server and PostgreSQ to set their password to the value of `sqlPwd`. Defaults to `$false`.
 * `-outputFile`: Full path of the output file to generate. A good idea is to generate a file in `/Deploy/helm/__values/` folder as this folder is ignored by Git. If not passed the result file is written on screen.
 * `-gvaluesTemplate`: Template of the _gvalues_ file to use. The parameter defaults to the `/Deploy/helm/gvalues.template` which is the only template provided.
-
+ 
 The script checks that all needed resources exists in the resource group. If some resource is missing or there is an unexpected resource, the script exits.
 
 ## Create secrets on the AKS
@@ -110,13 +126,16 @@ Additionaly there is a Powershell script in the `Deploy` folder, named `Build-Pu
 * `dockerTag`: Tag to use for generated images (defaults to `latest`)
 * `dockerBuild`: If `$true` (default value) docker images will be built using `docker-compose build`.
 * `dockerPush`: If `$true` (default value) docker images will be push to ACR using `docker-compose push`.
+* `isWindows`:  If `$false` (default value) it will generate Linux images, otherwise it will generate Windows images (like Registration users WCF service)
 
 This script uses `az` CLI to get ACR information, and then uses `docker-compose` to build and push the images to ACR.
 
-To build an push images tagged with v1 to a ACR named my-acr in resource group named my-rg:
+To build and push images tagged with v1 to a ACR named my-acr in resource group named my-rg:
+
+TODO: ADD PUBLISH AND 
 
 ```
-.\Build-Push.ps1 -resourceGroup my-rg -dockerTag v1 -acrName my-acr
+.\Build-Push.ps1 -resourceGroup my-rg -dockerTag v1 -acrName my-acr -isWindows $false
 ```
 
 To just push the images (without building them before):
@@ -137,7 +156,10 @@ resources:
 
 ## Deploying services
 
->**Note**: If you want to add SSL/TLS support on the cluster (needed to use https on the web) plase read following section **before installing the backend**.
+>**Note**: If you want to add SSL/TLS support on the cluster (needed to use https on the web) please read *Enabling SSL/TLS on the cluster* section **before installing the backend**.
+
+>**Note**: If the script has problems detecting the AKS host verify that the AKS has http_application_routing enabled.
+[More information](https://docs.microsoft.com/es-es/azure/aks/http-application-routing)
 
 To deploy the services from a Bash terminal run the `./deploy-images-aks.sh` script with the following parameters:
 
@@ -157,7 +179,8 @@ If using Powershell, have to run `./Deploy-Images-Aks.ps1` with following parame
 * `-acrName <name>` Name of the ACR
 * `-tag <tag>` Docker images tag to use. Defaults to  `latest`
 * `-charts <charts>` List of comma-separated values with charts to install. Defaults to `*` (all)
-* `-valueSFile <values-file>`: Values file to use (defaults to `gvalues.yaml`)
+* `-valuesFile <values-file>`: Values file to use (defaults to `gvalues.yaml`)
+* `-useInfraInAks`: Flag needed to check if infrastructure services will be in AKS or not.
 * `-tlsEnv prod|staging` If **SSL/TLS support has been installed**, you have to use this parameter to enable https endpoints. Value must be `staging` or `prod` and must be the same value used when you installed SSL/TLS support. If SSL/TLS is not installed, you can omit this parameter.
 * `-autoscale <boolean>`: Flag to activate HPA autoscaling. Defaults to `false`.
 
@@ -173,6 +196,7 @@ The parameter `charts` allow for a selective installation of charts. Is a list o
 * `ic` Image classifier API
 * `ct` Shopping cart API
 * `lg` Login API
+* `rr` Rewards Registration
 * `mgw` Mobile Api Gateway
 * `wgw` Web Api Gateway
 

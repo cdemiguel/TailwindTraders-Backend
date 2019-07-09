@@ -19,6 +19,12 @@ inf:
       catalog: # DB NAME LIKE  Microsoft.Tailwind.Profile-dev
       user: # ADMIN USERNAME LIKE tailadmin
       pwd: # ADMIN PWD
+    rewards:
+      host: # DB HOST LIKE tailwindtradersserver-dev.database.windows.net
+      port: "1433"
+      catalog: # DB NAME LIKE  Microsoft.Tailwind.Rewards-dev
+      user: # ADMIN USERNAME LIKE tailadmin
+      pwd: # ADMIN PWD
     coupons:
       user: # COSMOS USER tailwindtraders-coupons-dev
       pwd: # COSMOS PWD 
@@ -70,6 +76,8 @@ inf:
       path: /login-api
     cart:
       path: /cart-api
+    rewardsregistration:
+      path: /rewards-registration-api
   apiurls:
     popularproductsapiurl: http://popularproducts
     productsapiurl: http://product 
@@ -79,8 +87,8 @@ inf:
     imageclassifierapiurl: http://imageclassifier
     loginapiurl: http://login
   registrationusers:
-    registerusers: "false"
-    registrationusersurl: "TODO DEMI"
+    registerusers: true
+    registrationusersurl: http://rewards-registration/UserService.svc
 az:
   productvisitsurl: ""
 

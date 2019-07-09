@@ -1,24 +1,24 @@
-{{- $name := include "tt-products.fullname" . -}}
+{{- $name := include "tt-rewards-registration.fullname" . -}}
 {{- $cfgname := printf "%s-%s" "cfg" $name -}}
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ template "tt-products.fullname" . }}
+  name: {{ template "tt-rewards-registration.fullname" . }}
   labels:
-    app: {{ template "tt-products.name" . }}
-    chart: {{ template "tt-products.chart" . }}
+    app: {{ template "tt-rewards-registration.name" . }}
+    chart: {{ template "tt-rewards-registration.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ template "tt-products.name" . }}
+      app: {{ template "tt-rewards-registration.name" . }}
       release: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app: {{ template "tt-products.name" . }}
+        app: {{ template "tt-rewards-registration.name" . }}
         release: {{ .Release.Name }}
     spec:
       serviceAccountName: {{ .Values.inf.sa }}
@@ -66,3 +66,4 @@ spec:
       tolerations:
 {{ toYaml . | indent 8 }}
     {{- end }}
+

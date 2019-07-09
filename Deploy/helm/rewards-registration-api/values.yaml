@@ -2,7 +2,7 @@ replicaCount: 1
 applicationName: tailwindtraders
 
 image:
-  repository: tailwindtradersacr.azurecr.io/coupon.api
+  repository: tailwindtradersacr.azurecr.io/rewards.registration.api
   tag: prod
   pullPolicy: Always
 
@@ -17,7 +17,7 @@ resources:
     cpu: "100m"
 
 nodeSelector:
-  "kubernetes.io/os": linux
+  "kubernetes.io/os": windows
 
 tolerations: []
 
@@ -25,12 +25,9 @@ affinity: {}
 
 env:
   configmap:
-    - name: ApplicationInsights__InstrumentationKey
-    - name: CONNECTIONSTRING
-    - name: COUPON_COLLECTION
-    - name: URL_BASE
-    - name: ISSUER
-    - name: SECURITYKEY
+    - name: ConnectionString
+    - name: SecurityKey
+    - name: Issuer
   values:
     - name: ASPNETCORE_ENVIRONMENT
       value: Development
