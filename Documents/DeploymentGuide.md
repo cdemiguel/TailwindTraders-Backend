@@ -130,7 +130,7 @@ Additionaly there is a Powershell script in the `Deploy` folder, named `Build-Pu
 
 This script uses `az` CLI to get ACR information, and then uses `docker-compose` to build and push the images to ACR.
 
-To build an push images tagged with v1 to a ACR named my-acr in resource group named my-rg:
+To build and push images tagged with v1 to a ACR named my-acr in resource group named my-rg:
 
 TODO: ADD PUBLISH AND 
 

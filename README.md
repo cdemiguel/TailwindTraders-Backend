@@ -36,8 +36,18 @@ Click the following button to deploy:
 
 To create an AKS with the last version we need to execute this script located in .\Deploy folder:
 
+We need to register the Windows container with az tools:
+
+``` az
+ az feature register --name WindowsPreview --namespace Microsoft.ContainerService
+ az provider register -n Microsoft.ContainerService
+```
+
+then...
+
 ```powershell
-Create-WinLinux-Aks.ps1 --resourceGroup YourResourceGroupName --location TheRegion --clientId ServicePrincipalId --password ServicePrincipalSecret
+
+Create-WinLinux-Aks.ps1 -resourceGroup YourResourceGroupName -location TheRegion -clientId ServicePrincipalId -password ServicePrincipalSecret
 
 ```
 

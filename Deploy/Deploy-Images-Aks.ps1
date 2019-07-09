@@ -11,7 +11,8 @@ Param(
     [parameter(Mandatory=$false)][string]$cartAciName="",
     [parameter(Mandatory=$false)][string]$afHost = "http://your-product-visits-af-here",
     [parameter(Mandatory=$false)][string]$namespace = "",
-    [parameter(Mandatory=$false)][string][ValidateSet('prod','staging','none', IgnoreCase=$false)]$tlsEnv = "none",
+    [parameter(Mandatory=$false)][string][ValidateSet('prod','staging','none','custom', IgnoreCase=$false)]$tlsEnv = "none",
+    [parameter(Mandatory=$false)][string]$tlsSecretName="",
     [parameter(Mandatory=$false)][bool]$autoscale=$false
 )
 
@@ -42,20 +43,27 @@ function validate {
         $valid=$false
     }
 
+    if ($tlsEnv -eq "custom" -and [string]::IsNullOrEmpty($tlsSecretName)) {
+        Write-Host "If tlsEnv is custom must use -tlsSecretName to set the TLS secret name (you need to install this secret manually)"
+        $valid=$false
+    }
+
     if ($valid -eq $false) {
         exit 1
     }
 }
 
 function createHelmCommand([string]$command) {
-    $tlsSecretName = ""
+    $tlsSecretNameToUse = ""
     if ($tlsEnv -eq "staging") {
-        $tlsSecretName = "tt-letsencrypt-staging"
+        $tlsSecretNameToUse = "tt-letsencrypt-staging"
     }
     if ($tlsEnv -eq "prod") {
-        $tlsSecretName = "tt-letsencrypt-prod"
+        $tlsSecretNameToUse = "tt-letsencrypt-prod"
     }
-
+    if ($tlsEnv -eq "custom") {
+        $tlsSecretNameToUse=$tlsSecretName
+    }
     $newcmd = $command
 
     if (-not [string]::IsNullOrEmpty($namespace)) {
@@ -63,7 +71,7 @@ function createHelmCommand([string]$command) {
     }
 
     if (-not [string]::IsNullOrEmpty($tlsSecretName)) {
-        $newcmd = "$newcmd --set ingress.tls[0].secretName=$tlsSecretName --set ingress.tls[0].hosts={$aksHost}"
+        $newcmd = "$newcmd --set ingress.tls[0].secretName=$tlsSecretNameToUse --set ingress.tls[0].hosts={$aksHost}"
     }
 
     return "$newcmd";
@@ -87,7 +95,6 @@ $aksHost=$(az aks show -n $aksName -g $resourceGroup --query addonProfiles.httpa
 if (-not $aksHost) {
     $aksHost=$(az aks show -n $aksName -g $resourceGroup --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName -o json | ConvertFrom-Json)
 }
-
 
 Write-Host "acr login server is $acrLogin" -ForegroundColor Yellow
 Write-Host "aksHost is $aksHost" -ForegroundColor Yellow
