@@ -22,7 +22,7 @@ resources:
     cpu: "100m"
 
 nodeSelector:
-  "kubernetes.io/os": linux
+  "beta.kubernetes.io/os": linux
 
 tolerations: []
 

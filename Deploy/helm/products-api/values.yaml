@@ -12,12 +12,12 @@ service:
 
 resources:
   limits:
-    cpu: "500m"
+    cpu: "50m"
   requests:
-    cpu: "100m"
+    cpu: "50m"
 
 nodeSelector:
-  "kubernetes.io/os": linux
+  "beta.kubernetes.io/os": linux
 
 tolerations: []
 

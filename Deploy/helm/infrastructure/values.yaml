@@ -8,7 +8,7 @@ image:
   mongo:
     repository: mongo
     tag: 3.4-xenial
-    pullPolicy: IfNotPresent   
+    pullPolicy: IfNotPresent
   azurite:
     repository: arafato/azurite
     tag: "2.6.5"
@@ -16,7 +16,7 @@ image:
   pg:
     repository: postgres
     tag: "12-alpine"
-    pullPolicy: IfNotPresent   
+    pullPolicy: IfNotPresent
 
 service:
   sql:
@@ -46,7 +46,7 @@ volumes:
 resources: {}
 
 nodeSelector:
-  "kubernetes.io/os": linux
+  "beta.kubernetes.io/os": linux
 
 tolerations: []
 

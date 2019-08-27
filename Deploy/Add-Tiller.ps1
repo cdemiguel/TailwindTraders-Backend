@@ -7,4 +7,4 @@ kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admi
 Write-Host "------------------------------------------------------------" -ForegroundColor Yellow
 Write-Host "Installing Helm" -ForegroundColor Yellow
 Write-Host "------------------------------------------------------------" -ForegroundColor Yellow
-helm init --service-account tiller --node-selectors "kubernetes.io/os=linux"
+helm init --service-account tiller --node-selectors "beta.kubernetes.io/os=linux"  
