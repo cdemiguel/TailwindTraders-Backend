@@ -120,7 +120,7 @@ This section is already explained inside the 5.1 Link, but we need to run `./Dep
 **All services**
 
 ```
-.\Deploy-Images-Aks.ps1 -name my-tt -aksName AKSname -resourceGroup resourceGroupname -acrName acrName -valuesFile .\_\_values\yourValuesFile.yaml -useInfraInAks $false -tlsEnv staging -autoscale $true
+.\Deploy-Images-Aks.ps1 -name my-tt -aksName AKSname -resourceGroup resourceGroupname -acrName acrName -valuesFile .\__values\yourValuesFile.yaml -useInfraInAks $false -tlsEnv staging -autoscale $true
 ```
 
 **Selected Service**
@@ -227,7 +227,12 @@ To verify the demostration you can run this commands:
 To see how increments **target** usage and MINPODS/MAXPODS defined.
 
 ```
-kubectl describe hpa <podName>
+kubectl get hpa
+```
+
+```
+kubectl get hpa my-tt-product-tt-products
+kubectl describe hpa my-tt-product-tt-products
 ```
 
 To see how increments scaling number of replicas (product pods).
@@ -239,7 +244,7 @@ kubectl get pods -o wide
 To see CPU(cores) and Memory(bytes) incrementation
 
 ```
-kubectl top pode
+kubectl top pod
 ```
 
 or **in Azure Portal**

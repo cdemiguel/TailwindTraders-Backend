@@ -1,7 +1,10 @@
 Param(
     [parameter(Mandatory=$true)][string]$resourceGroup,
     [parameter(Mandatory=$false)][string]$location="eastus2",
-    [parameter(Mandatory=$false)][string]$aksName="ttvnodes"
+    [parameter(Mandatory=$false)][string]$aksName="ttvnodes",
+    [parameter(Mandatory=$false)][string]$kubernetesVersion="1.14.5",
+    [parameter(Mandatory=$false)][string]$clientid,
+    [parameter(Mandatory=$false)][string]$password
 )
 
 $rg = $(az group show -g $resourceGroup)
@@ -20,25 +23,27 @@ az network vnet create --resource-group $resourceGroup --name $vnetName  --addre
 Write-Host "Creating a subnet" -ForegroundColor Yellow
 az network vnet subnet create --resource-group $resourceGroup --vnet-name $vnetName --name $vnodesSubnetName --address-prefixes 10.241.0.0/16
 
-Write-Host "Creating a service principal..." -ForegroundColor Yellow
-$sp=$(az ad sp create-for-rbac --skip-assignment -o json | ConvertFrom-Json)
-$clientid=$sp.appId
-$password=$sp.password
-Write-Host "Principal appid is $clientid and pwd is $password" -ForegroundColor Yellow
-
-Write-Host "Waiting 1min to ensure principal is ready..."
-Start-Sleep -Seconds 60
+if([string]::IsNullOrEmpty($clientid) -and [string]::IsNullOrEmpty($password)) {
+    Write-Host "Creating a service principal..." -ForegroundColor Yellow
+    $sp=$(az ad sp create-for-rbac --skip-assignment -o json | ConvertFrom-Json)
+    $clientid=$sp.appId
+    $password=$sp.password
+    Write-Host "Principal appid is $clientid and pwd is $password" -ForegroundColor Yellow
+    Write-Host "Waiting 1min to ensure principal is ready..."
+    Start-Sleep -Seconds 60
+}
 
 Write-Host "Adding permissions to vnet..." -ForegroundColor Yellow
 $vnetid = $(az network vnet show --resource-group $resourceGroup --name $vnetName --query id -o tsv)
 Write-Host "vnet ID is $vnetid"
+Write-Host "clientid is $clientid"
 cmd /c "az role assignment create --assignee $clientid --scope $vnetid --role Contributor"
 Write-Host "Creating the AKS in the subnet..." -ForegroundColor Yellow
 $subnetId=$(az network vnet subnet show --resource-group $resourceGroup --vnet-name $vnetName --name $vsubnetName --query id -o tsv)
 Write-Host "subnet ID is $subnetId"
-az aks create --resource-group $resourceGroup --name $aksName --node-count 3 --network-plugin azure --service-cidr 10.0.0.0/16 --dns-service-ip 10.0.0.10 --docker-bridge-address 172.17.0.1/16 --vnet-subnet-id $subnetId --service-principal $clientid  --client-secret $password
+az aks create --resource-group $resourceGroup --name $aksName --node-count 3 --kubernetes-version $kubernetesVersion --network-plugin azure --service-cidr 10.0.0.0/16 --dns-service-ip 10.0.0.10 --docker-bridge-address 172.17.0.1/16 --vnet-subnet-id $subnetId --service-principal $clientid  --client-secret $password
 Write-Host "Enabling vnodes in the AKS..." -ForegroundColor Yellow
-az aks enable-addons --resource-group $resourceGroup --name $aksName --addons virtual-node  --subnet-name $vnodesSubnetName
+az aks enable-addons --resource-group $resourceGroup --name $aksName --addons virtual-node --subnet-name $vnodesSubnetName
 
 Write-Host "Enabling http application rotuing"
 az aks enable-addons --addons http_application_routing -n $aksName -g $resourceGroup

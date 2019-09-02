@@ -65,6 +65,8 @@ inf:
       path: /login-api      
     cart:
       path: /cart-api
+    rewardsregistration:
+      path: /rewards-registration-api
   apiurls:
     popularproductsapiurl: http://popularproducts
     productsapiurl: http://product 
@@ -76,6 +78,9 @@ inf:
   registrationusers:
     registerusers: false
     registrationusersurl: http://rewards-registration/UserService.svc
+  nodeSelector:
+    "kubernetes.io/os": linux
+    
 az:
   productvisitsurl: ""
 

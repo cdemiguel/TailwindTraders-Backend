@@ -37,17 +37,17 @@ inf:
       port: "27017"
       dbName: admin
       constr: mongodb://tt-user:Passw0rd1!@mongo.ttinfra:27017/admin
-      collection: CouponCollection 
+      collection: CouponCollection
       avoidSsl: true
     popularproducts:
       host: sql
       port: "1433"
       catalog: popularproducts
       user: sa
-      pwd: Passw0rd1!  
+      pwd: Passw0rd1!
     cart:
-      host: ""  # Overriden by Deploy-Images-Aks.ps1 when -useInfraInAks is $true
-      auth: C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==    # CosmosDb Emulator Key
+      host: "" # Overriden by Deploy-Images-Aks.ps1 when -useInfraInAks is $true
+      auth: C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== # CosmosDb Emulator Key
   appinsights:
     id: ""
   ingress:
@@ -66,14 +66,14 @@ inf:
     mobilebff:
       path: /mobilebff
     webbff:
-      path: /webbff    
+      path: /webbff
     login:
-      path: /login-api      
+      path: /login-api
     cart:
       path: /cart-api
   apiurls:
     popularproductsapiurl: http://popularproducts
-    productsapiurl: http://product 
+    productsapiurl: http://product
     profileapiurl: http://profile
     couponsapiurl: http://coupons
     stockapiurl: http://stock
@@ -82,6 +82,8 @@ inf:
   registrationusers:
     registerusers: false
     registrationusersurl: http://rewards-registration/UserService.svc
+  nodeSelector:
+    "kubernetes.io/os": linux
 az:
   productvisitsurl: ""
 
@@ -94,8 +96,8 @@ ingress:
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
     ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/rewrite-target: /
-#  hosts:
-#    - <guid>.<region>.aksapp.io   # NOT NEEDED. SET BY SCRIPTS
+  #  hosts:
+  #    - <guid>.<region>.aksapp.io   # NOT NEEDED. SET BY SCRIPTS
 
   tls: []
   #  - secretName: chart-example-tls
@@ -120,6 +122,6 @@ B2C:
 hpa:
   activated: false # set to true to deploy HPA for services
   cpu:
-    averageUtilization: 40 
+    averageUtilization: 40
   minReplicas: 1
   maxReplicas: 40

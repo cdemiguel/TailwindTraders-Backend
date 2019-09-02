@@ -14,7 +14,8 @@ Param(
     [parameter(Mandatory=$false)][string][ValidateSet('prod','staging','none','custom', IgnoreCase=$false)]$tlsEnv = "none",
     [parameter(Mandatory=$false)][string]$tlsHost="",
     [parameter(Mandatory=$false)][string]$tlsSecretName="",
-    [parameter(Mandatory=$false)][bool]$autoscale=$false
+    [parameter(Mandatory=$false)][bool]$autoscale=$false,
+    [parameter(Mandatory=$false)][bool]$useHibridScenario=$false
 )
 
 function validate {
@@ -77,7 +78,7 @@ function createHelmCommand([string]$command) {
     }
 
     if (-not [string]::IsNullOrEmpty($tlsSecretName)) {
-        $newcmd = "$newcmd --set ingress.tls[0].secretName=$tlsSecretNameToUse --set ingress.tls[0].hosts={$aksHost}"
+         $newcmd = "$newcmd --set ingress.tls[0].secretName=$tlsSecretNameToUse --set ingress.tls[0].hosts={$aksHost}"
     }
 
     return "$newcmd";
@@ -103,7 +104,7 @@ if ($tlsEnv -ne "custom") {
         $aksHost=$(az aks show -n $aksName -g $resourceGroup --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName -o json | ConvertFrom-Json)
     }
 
-     Write-Host "acr login server is $acrLogin" -ForegroundColor Yellow
+    Write-Host "acr login server is $acrLogin" -ForegroundColor Yellow
     Write-Host "aksHost is $aksHost" -ForegroundColor Yellow
 }
 else {
@@ -223,7 +224,7 @@ if ($charts.Contains("lg") -or  $charts.Contains("*")) {
     cmd /c "$command"
 }
 
-if ($charts.Contains("rr") -or  $charts.Contains("*")) {
+if ($charts.Contains("rr") -or  $charts.Contains("*") -and $useHibridScenario) {
     Write-Host "Rewards Registration -rr" -ForegroundColor Yellow
     $command = createHelmCommand "helm  upgrade --install $name-rewards-registration rewards-registration-api -f $valuesFile --set ingress.hosts={$aksHost} --set image.repository=$acrLogin/rewards.registration.api --set image.tag=$tag --set hpa.activated=$autoscale"
     cmd /c "$command"

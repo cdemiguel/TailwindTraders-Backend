@@ -63,4 +63,5 @@ else {
 }
 
 Write-Host "Deploying ServiceAccount ttsa" -ForegroundColor Yellow
+Write-Host "Use last kubectl version" -ForegroundColor Yellow
 kubectl apply -f helm/ttsa.yaml 
