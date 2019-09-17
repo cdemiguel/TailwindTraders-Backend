@@ -1,0 +1,41 @@
+trigger:
+- master
+
+resources:
+- repo: self
+
+variables:
+  tag: '$(Build.BuildId)'
+  resourceGroup: 'tt-test'
+  acrName: 'ttacroqsodrhmexw6s'
+
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:  
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+#    - task: PowerShell@2
+#      inputs:
+#        targetType: 'inline'
+#        script: |
+#          Write-Host "Trying to log in"
+#          az login -u <user> -p "<pass>" --subscription acd68168-1cca-4202-83d5-16d8cad955e3
+    - task: PowerShell@2
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/Deploy/Create-Secret.ps1'
+        arguments: '-resourceGroup $(resourceGroup) -acrName $(acrName)'
+        workingDirectory: '$(Build.SourcesDirectory)/Deploy'
+    - task: PowerShell@2
+      inputs:
+        filePath: '$(Build.SourcesDirectory)/Deploy/Build-Push.ps1'
+        arguments: '-resourceGroup $(resourceGroup) -acrName $(acrName) -dockerTag $(tag)'
+        workingDirectory: '$(Build.SourcesDirectory)/Deploy'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.SourcesDirectory)/Deploy'
+        artifactName: 'scripts'
+        publishLocation: 'Container'
