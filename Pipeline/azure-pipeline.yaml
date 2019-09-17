@@ -17,8 +17,9 @@ jobs:
     displayName: Compose build
     inputs:
       dockerComposeCommand: 'build'
-      containerregistrytype: Container Registry
-      dockerRegistryEndpoint: ${{ variables['registryEndpoint'] }}
+      containerregistrytype: Azure Container Registry
+      azureSubscriptionEndpoint: Visual Studio Enterprise – MPN
+      azureContainerRegistry: ${{ variables['registryEndpoint'] }}
       dockerComposeFile: docker-compose.yml
       additionalDockerComposeFiles: docker-compose.override.yml
       qualifyImageNames: true
@@ -29,8 +30,9 @@ jobs:
     displayName: Compose push
     inputs:
       dockerComposeCommand: 'push'
-      containerregistrytype: Container Registry
-      dockerRegistryEndpoint: ${{ variables['registryEndpoint'] }}
+      containerregistrytype: Azure Container Registry
+      azureSubscriptionEndpoint: Visual Studio Enterprise – MPN
+      azureContainerRegistry: ${{ variables['registryEndpoint'] }}
       dockerComposeFile: docker-compose.yml
       additionalDockerComposeFiles: docker-compose.override.yml
       qualifyImageNames: true
