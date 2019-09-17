@@ -21,7 +21,7 @@ jobs:
       azureSubscriptionEndpoint: Visual Studio Enterprise – MPN
       azureContainerRegistry: ${{ variables['registryEndpoint'] }}
       dockerComposeFile: Source/docker-compose.yml
-      additionalDockerComposeFiles: Source/docker-compose.override.yml
+      additionalDockerComposeFiles: docker-compose.override.yml
       qualifyImageNames: true
       projectName: "tailwindtraders"
       dockerComposeFileArgs: |
@@ -34,7 +34,7 @@ jobs:
       azureSubscriptionEndpoint: Visual Studio Enterprise – MPN
       azureContainerRegistry: ${{ variables['registryEndpoint'] }}
       dockerComposeFile: Source/docker-compose.yml
-      additionalDockerComposeFiles: Source/docker-compose.override.yml
+      additionalDockerComposeFiles: docker-compose.override.yml
       qualifyImageNames: true
       projectName: "tailwindtraders"
       dockerComposeFileArgs: |
