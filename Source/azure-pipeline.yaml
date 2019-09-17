@@ -23,7 +23,8 @@ stages:
       inputs:
         targetType: 'inline'
         script: |
-          az login -u $(username) -p "$(password)" --subscription $(subscriptionId)
+          az login -u $(username) -p "$(password)"
+          az account set --subscription $(subscriptionId)
     - task: PowerShell@2
       displayName: 'Create-Secret'
       inputs:
