@@ -27,7 +27,6 @@ stages:
         targetType: 'inline'
         script: |
           Invoke-Expression 'az login -u $(username) -p "$(password)"'
-          Invoke-Expression 'az account set --subscription $(subscriptionId)'
     - task: PowerShell@2
       displayName: 'Create-Secret'
       inputs:
