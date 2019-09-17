@@ -1,92 +1,73 @@
 parameters:
-  services: ''
-  registryEndpoint: ''
-  helmfrom: ''
+  registryEndpoint: 'ttacroqsodrhmexw6s'
+  helmfrom: 'Deploy'
   helmto: ''
 
 jobs:
-- job: BuildContainersForPR_Linux
-  condition: eq('${{ variables['Build.Reason'] }}', 'PullRequest')
-  pool:
-    vmImage: 'ubuntu-16.04'
-  steps:
-  - bash: docker-compose build ${{ parameters.services }}
-    displayName: Create multiarch manifest
-    env:
-      TAG: ${{ variables['Build.SourceBranchName'] }}    
-- job: BuildContainersForPR_Windows
-  condition: eq('${{ variables['Build.Reason'] }}', 'PullRequest')
-  pool:
-    vmImage: 'windows-2019'
-  steps:
-  - bash: docker-compose build ${{ parameters.services }}
-    displayName: Create multiarch manifest
-    env:
-      TAG: ${{ variables['Build.SourceBranchName'] }} 
-      PLATFORM: win
-      NODE_IMAGE: stefanscherer/node-windows:10
 - job: BuildLinux
   condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
   - task: DockerCompose@0
-    displayName: Compose build ${{ parameters.services }}
+    displayName: Compose build
     inputs:
-      dockerComposeCommand: 'build ${{ parameters.services }}'
+      dockerComposeCommand: 'build'
       containerregistrytype: Container Registry
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
       dockerComposeFile: docker-compose.yml
+      additionalDockerComposeFiles: docker-compose.override.yml
       qualifyImageNames: true
-      projectName: ""
+      projectName: "tailwindtraders"
       dockerComposeFileArgs: |
-        TAG=${{ variables['Build.SourceBranchName'] }}
+        TAG=${{ variables['Build.BuildId'] }}
   - task: DockerCompose@0
-    displayName: Compose push ${{ parameters.images }}
+    displayName: Compose push
     inputs:
-      dockerComposeCommand: 'push ${{ parameters.services }}'
+      dockerComposeCommand: 'push'
       containerregistrytype: Container Registry
       dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
       dockerComposeFile: docker-compose.yml
+      additionalDockerComposeFiles: docker-compose.override.yml
       qualifyImageNames: true
-      projectName: ""
+      projectName: "tailwindtraders"
       dockerComposeFileArgs: |
-        TAG=${{ variables['Build.SourceBranchName'] }} 
+        TAG=${{ variables['Build.BuildId'] }} 
   - task: CopyFiles@2
     inputs:
       sourceFolder: ${{ parameters.helmfrom }}
-      targetFolder: ${{ parameters.helmto }}
+      targetFolder: '$(Build.ArtifactStagingDirectory)'
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: ${{ parameters.helmto }}
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
       artifactName: helm
-- job: BuildWindows
-  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
-  pool:
-    vmImage: 'windows-2019'
-  steps:
-  - task: DockerCompose@0
-    displayName: Compose build ${{ parameters.services }}
-    inputs:
-      dockerComposeCommand: 'build ${{ parameters.services }}'
-      containerregistrytype: Container Registry
-      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
-      dockerComposeFile: docker-compose.yml
-      qualifyImageNames: true
-      projectName: ""
-      dockerComposeFileArgs: |
-        TAG=${{ variables['Build.SourceBranchName'] }}
-        PLATFORM=win
-        NODE_IMAGE=stefanscherer/node-windows:10
-  - task: DockerCompose@0
-    displayName: Compose push ${{ parameters.services }}
-    inputs:
-      dockerComposeCommand: 'push ${{ parameters.services }}'
-      containerregistrytype: Container Registry
-      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
-      dockerComposeFile: docker-compose.yml
-      qualifyImageNames: true
-      projectName: ""
-      dockerComposeFileArgs: |
-        TAG=${{ variables['Build.SourceBranchName'] }}
-        PLATFORM=win      
+#- job: BuildWindows
+#  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
+#  pool:
+#    vmImage: 'windows-2019'
+#  steps:
+#  - task: DockerCompose@0
+#    displayName: Compose build ${{ parameters.services }}
+#    inputs:
+#      dockerComposeCommand: 'build ${{ parameters.services }}'
+#      containerregistrytype: Container Registry
+#      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
+#      dockerComposeFile: docker-compose.yml
+#      qualifyImageNames: true
+#      projectName: ""
+#      dockerComposeFileArgs: |
+#        TAG=${{ variables['Build.SourceBranchName'] }}
+#        PLATFORM=win
+#        NODE_IMAGE=stefanscherer/node-windows:10
+#  - task: DockerCompose@0
+#    displayName: Compose push ${{ parameters.services }}
+#    inputs:
+#      dockerComposeCommand: 'push ${{ parameters.services }}'
+#      containerregistrytype: Container Registry
+#      dockerRegistryEndpoint: ${{ parameters.registryEndpoint }}
+#      dockerComposeFile: docker-compose.yml
+#      qualifyImageNames: true
+#      projectName: ""
+#      dockerComposeFileArgs: |
+#        TAG=${{ variables['Build.SourceBranchName'] }}
+#        PLATFORM=win      
