@@ -1,3 +1,9 @@
+trigger:
+- master
+
+resources:
+- repo: self
+
 parameters:
   registryEndpoint: 'ttacroqsodrhmexw6s'
   helmfrom: 'Deploy'
