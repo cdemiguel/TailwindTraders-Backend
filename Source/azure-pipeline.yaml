@@ -8,6 +8,9 @@ variables:
   tag: '$(Build.BuildId)'
   resourceGroup: 'tt-test'
   acrName: 'ttacroqsodrhmexw6s'
+  username: 'cmiguel@plainconcepts.com'
+  password: '4Mx+66k{'
+  subscriptionId: 'a60f4ee6-1370-4ef3-8ebf-7e0e7751f250'
 
 stages:
 - stage: Build
@@ -21,10 +24,10 @@ stages:
     - task: PowerShell@2
       displayName: 'az login'
       inputs:
-        targetType: 'InlineScript'
+        targetType: 'inline'
         script: |
-          az login -u $(username) -p $(password)
-          az account set --subscription $(subscriptionId)
+          Invoke-Expression 'az login -u $(username) -p "$(password)"'
+          Invoke-Expression 'az account set --subscription $(subscriptionId)'
     - task: PowerShell@2
       displayName: 'Create-Secret'
       inputs:
