@@ -9,7 +9,7 @@ variables:
   helmfrom: 'Deploy'
 
 jobs:
-- job: BuildLinux
+- job: Build Linux
   pool:
     vmImage: 'ubuntu-16.04'
   steps:
@@ -29,6 +29,7 @@ jobs:
   - task: DockerCompose@0
     displayName: Compose push
     inputs:
+      action: Push services
       dockerComposeCommand: 'push'
       containerregistrytype: Azure Container Registry
       azureSubscriptionEndpoint: Visual Studio Enterprise – MPN
