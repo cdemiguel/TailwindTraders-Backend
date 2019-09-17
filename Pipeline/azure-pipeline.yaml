@@ -1,7 +1,6 @@
 parameters:
   registryEndpoint: 'ttacroqsodrhmexw6s'
   helmfrom: 'Deploy'
-  helmto: ''
 
 jobs:
 - job: BuildLinux
@@ -36,10 +35,10 @@ jobs:
   - task: CopyFiles@2
     inputs:
       sourceFolder: ${{ parameters.helmfrom }}
-      targetFolder: '$(Build.ArtifactStagingDirectory)'
+      targetFolder: ${{ variables['Build.ArtifactStagingDirectory'] }}
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      pathtoPublish: ${{ variables['Build.ArtifactStagingDirectory'] }}
       artifactName: helm
 #- job: BuildWindows
 #  condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
