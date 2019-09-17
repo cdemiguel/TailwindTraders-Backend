@@ -21,12 +21,10 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: AzureCLI@1
-      displayName: 'az account'
+    - task: PowerShell@2
       inputs:
-        azureSubscription: 'Visual Studio Enterprise – MPN'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az account --subscription $(subscriptionId)'
+        targetType: 'inline'
+        script: 'az login -u "cmiguel@plainconcepts.com" -p "4Mx+66k{" --debug'
     - task: PowerShell@2
       displayName: 'Create-Secret'
       inputs:
