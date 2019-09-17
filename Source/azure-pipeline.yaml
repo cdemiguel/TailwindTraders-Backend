@@ -22,13 +22,7 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - task: AzureCLI@1
-      displayName: 'az login'
-      inputs:
-        azureSubscription: 'Visual Studio Enterprise – MPN'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az login -u $(username) -p "$(password)"'
-    - task: AzureCLI@1
-      displayName: 'az login'
+      displayName: 'az account'
       inputs:
         azureSubscription: 'Visual Studio Enterprise – MPN'
         scriptLocation: 'inlineScript'
