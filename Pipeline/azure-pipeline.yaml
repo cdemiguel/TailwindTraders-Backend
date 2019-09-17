@@ -4,6 +4,10 @@ trigger:
 resources:
 - repo: self
 
+parameters:
+  registryEndpoint: 'ttacroqsodrhmexw6s'
+  helmfrom: 'Deploy'
+
 jobs:
 - job: BuildLinux
   condition: ne('${{ variables['Build.Reason'] }}', 'PullRequest')
@@ -15,7 +19,7 @@ jobs:
     inputs:
       dockerComposeCommand: 'build'
       containerregistrytype: Container Registry
-      dockerRegistryEndpoint: ttacroqsodrhmexw6s
+      dockerRegistryEndpoint: ${{ parameters['registryEndpoint'] }}
       dockerComposeFile: docker-compose.yml
       additionalDockerComposeFiles: docker-compose.override.yml
       qualifyImageNames: true
@@ -27,7 +31,7 @@ jobs:
     inputs:
       dockerComposeCommand: 'push'
       containerregistrytype: Container Registry
-      dockerRegistryEndpoint: ttacroqsodrhmexw6s
+      dockerRegistryEndpoint: ${{ parameters['registryEndpoint'] }}
       dockerComposeFile: docker-compose.yml
       additionalDockerComposeFiles: docker-compose.override.yml
       qualifyImageNames: true
@@ -36,7 +40,7 @@ jobs:
         TAG=${{ variables['Build.BuildId'] }} 
   - task: CopyFiles@2
     inputs:
-      sourceFolder: Deploy
+      sourceFolder: ${{ parameters['helmfrom'] }}
       targetFolder: ${{ variables['Build.ArtifactStagingDirectory'] }}
   - task: PublishBuildArtifacts@1
     inputs:
