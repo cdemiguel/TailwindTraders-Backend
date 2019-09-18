@@ -35,6 +35,7 @@ if ($dockerPush) {
     Write-Host "---------------------------------------------------" -ForegroundColor Yellow
     Write-Host "Pushing images to $acrLoginServer" -ForegroundColor Yellow
     Write-Host "---------------------------------------------------" -ForegroundColor Yellow
+
     Push-Location $sourceFolder
     docker login -p $acrPwd -u $acrUser $acrLoginServer
     $env:TAG=$dockerTag
