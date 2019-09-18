@@ -16,7 +16,7 @@ jobs:
     vmImage: 'ubuntu-16.04'
   steps:
   - task: AzureCLI@1
-    displayName: ACR 
+    displayName: Build and Push to ACR 
     inputs:
       azureSubscription: ${{ variables['subscription'] }}
       scriptLocation: 'inlineScript'
