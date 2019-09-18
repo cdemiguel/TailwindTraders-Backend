@@ -18,7 +18,6 @@ jobs:
       azureSubscription: 'Visual Studio Enterprise – MPN'
       scriptLocation: 'inlineScript'
       inlineScript: 'az account list -o json'
-      addSpnToEnvironment: true
   - task: DockerCompose@0
     displayName: Compose build
     inputs:
