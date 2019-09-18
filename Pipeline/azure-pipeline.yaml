@@ -5,7 +5,8 @@ resources:
 - repo: self
 
 variables:
-  registryEndpoint: 'ttacroqsodrhmexw6s'
+  acrName: 'ttacroqsodrhmexw6s'
+  resourceGroup: 'tt-test'
   helmfrom: 'Deploy'
 
 jobs:
@@ -17,34 +18,8 @@ jobs:
     inputs:
       azureSubscription: 'Visual Studio Enterprise'
       scriptLocation: 'inlineScript'
-      inlineScript: 'az account list -o json'
-  - task: DockerCompose@0
-    displayName: Compose build
-    inputs:
-      dockerComposeCommand: 'build'
-      containerregistrytype: Azure Container Registry
-      azureSubscriptionEndpoint: Visual Studio Enterprise – MPN
-      azureContainerRegistry: ${{ variables['registryEndpoint'] }}
-      dockerComposeFile: Source/docker-compose.yml
-      additionalDockerComposeFiles: docker-compose.override.yml
-      qualifyImageNames: true
-      projectName: "tailwindtraders"
-      dockerComposeFileArgs: |
-        TAG=${{ variables['Build.BuildId'] }}
-  - task: DockerCompose@0
-    displayName: Compose push
-    inputs:
-      action: Push services
-      dockerComposeCommand: 'push'
-      containerregistrytype: Azure Container Registry
-      azureSubscriptionEndpoint: Visual Studio Enterprise – MPN
-      azureContainerRegistry: ${{ variables['registryEndpoint'] }}
-      dockerComposeFile: Source/docker-compose.yml
-      additionalDockerComposeFiles: docker-compose.override.yml
-      qualifyImageNames: true
-      projectName: "tailwindtraders"
-      dockerComposeFileArgs: |
-        TAG=${{ variables['Build.BuildId'] }} 
+      inlineScript: 'Build-Push.ps1 -resourceGroup $(resourceGroup) -acrName $(acrName)'
+      workingDirectory: 'Deploy'
   - task: CopyFiles@2
     inputs:
       sourceFolder: ${{ variables['helmfrom'] }}
