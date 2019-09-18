@@ -15,7 +15,7 @@ jobs:
   steps:
   - task: AzureCLI@1
     inputs:
-      azureSubscription: 'Visual Studio Enterprise – MPN'
+      azureSubscription: 'Visual Studio Enterprise'
       scriptLocation: 'inlineScript'
       inlineScript: 'az account list -o json'
   - task: DockerCompose@0
