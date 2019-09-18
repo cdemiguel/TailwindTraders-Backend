@@ -5,6 +5,7 @@ resources:
 - repo: self
 
 variables:
+  subscription: 'Visual Studio Enterprise'
   acrName: 'ttacroqsodrhmexw6s'
   resourceGroup: 'tt-test'
   helmfrom: 'Deploy'
@@ -15,16 +16,19 @@ jobs:
     vmImage: 'ubuntu-16.04'
   steps:
   - task: AzureCLI@1
+    displayName: ACR 
     inputs:
-      azureSubscription: 'Visual Studio Enterprise'
+      azureSubscription: ${{ variables['subscription'] }}
       scriptLocation: 'inlineScript'
-      inlineScript: 'Build-Push.ps1 -resourceGroup $(resourceGroup) -acrName $(acrName)'
+      inlineScript: 'pwsh Build-Push.ps1 -resourceGroup $(resourceGroup) -acrName $(acrName)'
       workingDirectory: 'Deploy'
   - task: CopyFiles@2
+    displayName: Copy release scripts
     inputs:
       sourceFolder: ${{ variables['helmfrom'] }}
       targetFolder: ${{ variables['Build.ArtifactStagingDirectory'] }}
   - task: PublishBuildArtifacts@1
+    displayName: Publish scripts artifact
     inputs:
       pathtoPublish: ${{ variables['Build.ArtifactStagingDirectory'] }}
       artifactName: helm
