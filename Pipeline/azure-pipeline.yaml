@@ -18,9 +18,9 @@ jobs:
   - task: AzureCLI@1
     displayName: Build and Push to ACR 
     inputs:
-      azureSubscription: ${{ variables['subscription'] }}
+      azureSubscription: '${{ variables[''subscription''] }}'
       scriptLocation: 'inlineScript'
-      inlineScript: 'pwsh -File Build-Push.ps1 -resourceGroup $(resourceGroup) -acrName $(acrName)'
+      inlineScript: 'pwsh -File Build-Push.ps1 -resourceGroup $(resourceGroup) -acrName $(acrName) -dockerTag $(Build.BuildId)'
       workingDirectory: 'Deploy'
   - task: CopyFiles@2
     displayName: Copy release scripts
