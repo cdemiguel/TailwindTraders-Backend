@@ -4,7 +4,7 @@ Param(
     [parameter(Mandatory=$false)][bool]$dockerBuild=$true,
     [parameter(Mandatory=$false)][bool]$dockerPush=$true,
     [parameter(Mandatory=$false)][string]$dockerTag="latest",
-    [parameter(Mandatory=$false)][bool]$isWindows=$false
+    [parameter(Mandatory=$false)][bool]$isWindowsMachine=$false
 )
 
 Write-Host "---------------------------------------------------" -ForegroundColor Yellow
@@ -14,7 +14,7 @@ $acrLoginServer=$(az acr show -g $resourceGroup -n $acrName -o json | ConvertFro
 $acrCredentials=$(az acr credential show -g $resourceGroup -n $acrName -o json | ConvertFrom-Json)
 $acrPwd=$acrCredentials.passwords[0].value
 $acrUser=$acrCredentials.username
-$dockerComposeFile= If ($isWindows) {".\docker-compose-win.yml"} Else {".\docker-compose.yml"}
+$dockerComposeFile= If ($isWindowsMachine) {".\docker-compose-win.yml"} Else {".\docker-compose.yml"}
 
 if ($dockerBuild) {
     Write-Host "---------------------------------------------------" -ForegroundColor Yellow
