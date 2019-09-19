@@ -16,6 +16,13 @@ jobs:
     vmImage: 'ubuntu-16.04'
   steps:
   - task: AzureCLI@1
+    displayName: Create Secrets 
+    inputs:
+      azureSubscription: '${{ variables[''subscription''] }}'
+      scriptLocation: 'inlineScript'
+      inlineScript: 'pwsh -File Create-Secrets.ps1 -resourceGroup $(resourceGroup) -acrName $(acrName)'
+      workingDirectory: 'Deploy'
+  - task: AzureCLI@1
     displayName: Build and Push to ACR 
     inputs:
       azureSubscription: '${{ variables[''subscription''] }}'
