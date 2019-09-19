@@ -47,7 +47,7 @@ jobs:
   - task: NuGetCommand@2
     inputs:
       command: 'restore'
-      restoreSolution: '**/*.sln'
+      restoreSolution: '**/Tailwind.Traders.Rewards.Registration.Api.csproj'
       feedsToUse: 'select'
   - task: MSBuild@1
     inputs:
