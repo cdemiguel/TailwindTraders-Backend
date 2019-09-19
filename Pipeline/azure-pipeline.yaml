@@ -48,8 +48,6 @@ jobs:
     inputs:
       solution: '**/Tailwind.Traders.Rewards.Registration.Api.csproj'
       msbuildArchitecture: 'x64'
-      platform: 'x64'
-      configuration: 'Release'
       msbuildArguments: '/p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml'
       clean: true
   - task: AzureCLI@1
