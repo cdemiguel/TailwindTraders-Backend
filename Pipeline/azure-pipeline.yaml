@@ -54,8 +54,3 @@ jobs:
       PathtoPublish: '$(Build.ArtifactStagingDirectory)'
       ArtifactName: 'helm'
       publishLocation: 'Container'
-
-
-
-      variables:
-  ResourceGroup: 'tt-test'
