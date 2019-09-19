@@ -94,17 +94,4 @@ Write-Host ($tokens | ConvertTo-Json) -ForegroundColor Yellow
 
 Write-Host "===========================================================" -ForegroundColor Yellow
 
-# & .\token-replace.ps1 -inputFile $gvaluesTemplate -outputFile $outputFile -tokens $tokens
-
-$content = Get-Content -Raw $gvaluesTemplate
-
-Write-Host "Content read from template file" -ForegroundColor Yellow
-$tokens.Keys | % ($_) {
-    $content = $content -replace "{{$_}}",  $tokens[$_]
-}
-
-Write-Host "Content replaced" -ForegroundColor Yellow
-
-Set-Content -Path $outputFile -Value $content
-
-Write-Host "Content saved" -ForegroundColor Yellow
+& .\token-replace.ps1 -inputFile $gvaluesTemplate -outputFile $outputFile -tokens $tokens
