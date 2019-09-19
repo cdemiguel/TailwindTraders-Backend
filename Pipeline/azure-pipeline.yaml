@@ -20,7 +20,7 @@ jobs:
     inputs:
       azureSubscription: '${{ variables[''subscription''] }}'
       scriptLocation: inlineScript
-      inlineScript: 'az aks get-credentials -n tailwindtradersaksoqsodrhmexw6s -g $(ResourceGroup)'
+      inlineScript: 'az aks get-credentials -n tailwindtradersaksoqsodrhmexw6s -g $(resourceGroup)'
       addSpnToEnvironment: true
       useGlobalConfig: true
       workingDirectory: '$(System.ArtifactsDirectory)\helm'
