@@ -20,7 +20,7 @@ jobs:
     inputs:
       azureSubscription: '${{ variables[''subscription''] }}'
       scriptLocation: 'inlineScript'
-      inlineScript: 'pwsh -File Create-Secrets.ps1 -resourceGroup $(resourceGroup) -acrName $(acrName)'
+      inlineScript: 'pwsh -File Create-Secret.ps1 -resourceGroup $(resourceGroup) -acrName $(acrName)'
       workingDirectory: 'Deploy'
   - task: AzureCLI@1
     displayName: Build and Push to ACR 
