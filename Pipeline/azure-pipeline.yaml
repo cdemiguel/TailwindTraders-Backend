@@ -16,24 +16,6 @@ jobs:
     vmImage: 'ubuntu-16.04'
   steps:
   - task: AzureCLI@1
-    displayName: 'Get credentials'
-    inputs:
-      azureSubscription: '${{ variables[''subscription''] }}'
-      scriptLocation: inlineScript
-      inlineScript: 'az aks get-credentials -n tailwindtradersaksoqsodrhmexw6s -g $(resourceGroup)'
-      addSpnToEnvironment: true
-      useGlobalConfig: true
-      workingDirectory: '$(System.ArtifactsDirectory)\helm'
-  - task: AzureCLI@1
-    displayName: Create Secrets 
-    inputs:
-      azureSubscription: '${{ variables[''subscription''] }}'
-      scriptLocation: 'inlineScript'
-      inlineScript: 'pwsh -File Create-Secret.ps1 -resourceGroup $(resourceGroup) -acrName $(acrName)'
-      addSpnToEnvironment: true
-      useGlobalConfig: true
-      workingDirectory: 'Deploy'
-  - task: AzureCLI@1
     displayName: Build and Push to ACR 
     inputs:
       azureSubscription: '${{ variables[''subscription''] }}'
