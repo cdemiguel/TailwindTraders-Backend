@@ -5,10 +5,10 @@ resources:
 - repo: self
 
 variables:
-  subscription: 'Visual Studio Enterprise'
   # subscription: ''
   # acrName: ''
   # resourceGroup: ''
+  helmfrom: 'Deploy'
 
 jobs:
 - job: Deploy_Scripts
