@@ -48,7 +48,7 @@ jobs:
     inputs:
       solution: '**/Tailwind.Traders.Rewards.Registration.Api.csproj'
       msbuildArchitecture: 'x64'
-      msbuildArguments: '/p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml /p:SolutionDirectory=./Source'
+      msbuildArguments: '/p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml /p:SolutionDir=./Source'
       clean: true
       restoreNugetPackages: true
   - task: AzureCLI@1
