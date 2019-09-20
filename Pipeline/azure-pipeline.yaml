@@ -44,17 +44,13 @@ jobs:
   pool:
     vmImage: 'windows-2019'
   steps:
-  - task: NuGetCommand@2
-    inputs:
-      command: 'restore'
-      restoreSolution: '**/Tailwind.Traders.Rewards.Registration.Api.csproj'
-      feedsToUse: 'select'
   - task: MSBuild@1
     inputs:
       solution: '**/Tailwind.Traders.Rewards.Registration.Api.csproj'
       msbuildArchitecture: 'x64'
       msbuildArguments: '/p:DeployOnBuild=true /p:PublishProfile=FolderProfile.pubxml'
       clean: true
+      restoreNugetPackages: true
   - task: AzureCLI@1
     displayName: Build and Push to ACR 
     inputs:
