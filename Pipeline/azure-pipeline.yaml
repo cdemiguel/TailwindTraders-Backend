@@ -6,9 +6,9 @@ resources:
 
 variables:
   subscription: 'Visual Studio Enterprise'
-  acrName: 'ttacroqsodrhmexw6s'
-  resourceGroup: 'tt-test'
-  helmfrom: 'Deploy'
+  subscription: ''
+  acrName: ''
+  resourceGroup: ''
 
 jobs:
 - job: Deploy_Scripts
