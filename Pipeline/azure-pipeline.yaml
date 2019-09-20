@@ -6,9 +6,9 @@ resources:
 
 variables:
   subscription: 'Visual Studio Enterprise'
-  subscription: ''
-  acrName: ''
-  resourceGroup: ''
+  # subscription: ''
+  # acrName: ''
+  # resourceGroup: ''
 
 jobs:
 - job: Deploy_Scripts
